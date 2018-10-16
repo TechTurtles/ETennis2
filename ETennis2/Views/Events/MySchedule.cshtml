@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<ETennis2.Model.Event>
+@{
+    ViewData["Title"] = "MySchedule";
+}
+
+    <div asp-authorize asp-roles="Coach" class="mt-5 row">
+        <div class="col-6">
+            <h2 class="text-info">Your Schedules</h2>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped border">
+            <tr class="table-info">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    Enrolled Members
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                if (@UserManager.GetUserName(User) == item.Coach.Email)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <a asp-controller="Schedules" asp-action="Index"> Enrolled</a>
+                    </td>
+                    @*<td>
+                            <partial name="_TableButtonPartial" model="item.EventId" />
+                        </td>*@
+                </tr>
+                }
+            }
+        </table>
+    </div>

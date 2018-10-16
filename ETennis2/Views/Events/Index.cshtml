@@ -29,6 +29,7 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -50,11 +51,6 @@
                 <td>
                     <partial name="_TableButtonPartial" model="item.EventId" />
                 </td>
-                @*<td>
-                        <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
-                    </td>*@
             </tr>
         }
     </tbody>

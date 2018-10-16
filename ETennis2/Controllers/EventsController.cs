@@ -31,6 +31,12 @@ namespace ETennis2.Controllers
             var events = _context.Event.Include(m => m.Coach);
             return View(await _context.Event.ToListAsync());
         }
+        //GET: CoachSchedules
+        public async Task<IActionResult> MySchedule()
+        {
+            var events = _context.Event.Include(m => m.Coach);
+            return View(await _context.Event.ToListAsync());
+        }
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)

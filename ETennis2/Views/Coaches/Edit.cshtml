@@ -1,7 +1,66 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ETennis2.Model.Coach
 @{
     ViewData["Title"] = "Edit";
 }
+<h2 class="mt-5 text-info">Edit Your Details</h2>
 
-<h2>Edit</h2>
+<form method="post" asp-action="Edit">
+    <div class="p-4 border rounded">
+        <input type="hidden" asp-for="CoachId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Name" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Nickname"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Nickname" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Email"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Email" class="form-control" value="@UserManager.GetUserName(User)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Dob"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Dob" class="form-control" />
+            </div>
+            <span asp-validation-for="Dob" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Biography"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Biography" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" asp-route-id="@Model.CoachId" value="Update" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

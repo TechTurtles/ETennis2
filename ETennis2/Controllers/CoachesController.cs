@@ -25,6 +25,8 @@ namespace ETennis2.Controllers
             return View(await _context.Coach.ToListAsync());
         }
 
+
+
         // GET: Coaches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,7 +56,7 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CoachId,Name,Nickname,Dob,Biography")] Coach coach)
+        public async Task<IActionResult> Create([Bind("CoachId,Name,Nickname,Dob,Biography,Email")] Coach coach)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +88,7 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CoachId,Name,Nickname,Dob,Biography")] Coach coach)
+        public async Task<IActionResult> Edit(int id, [Bind("CoachId,Name,Nickname,Dob,Biography,Email")] Coach coach)
         {
             if (id != coach.CoachId)
             {

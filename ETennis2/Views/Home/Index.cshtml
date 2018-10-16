@@ -1,94 +1,220 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+<section class="intro carousel slide bg-overlay-light m-0" id="carouselExampleCaptions">
     <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="1" class=""></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+        <div class="carousel-item active">
+            <img class="image" src="~/images/Tennis-terms.jpg" alt="First slide" />
+            <div class="carousel-caption ">
+                <h2 class="display-4 text-white mb-2 mt-4">Anyone For Tennis Todat?</h2>
+                <p class="text-white mb-3 px-5 lead">It is time to get back on tennis </p>
+                <!--<a href="#" class="btn btn-primary btn-capsul px-4 py-2">Explore More</a>-->
             </div>
         </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+        <div class="carousel-item">
+            <img class="image" src="~/images/Tennis-terms.jpg" alt="First slide" />
+            <div class="carousel-caption ">
+                <h2 class="display-4 text-white mb-2 mt-4">Accept the challenges so that you can feel the exhilaration of victory.</h2>
+                <p class="text-white mb-3 px-5 lead">you are the next winner</p>
+
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-</div>
+</section>
+<!-- Info block 1 -->
+<section class="info-section">
+    <div class="container">
+        <div class="head-box text-center mb-5">
+            <h2>Who We Are</h2>
+            <h6 class="text-underline-primary">The Darwin Tennis team</h6>
+        </div>
+        <div class="three-panel-block mt-5">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="service-block-overlay text-center mb-5 p-lg-3">
+                        <i class="fa fa-laptop box-circle-solid mt-3 mb-3" aria-hidden="true"></i>
+                        <h3>Darwin Tennis info</h3>
+                        <p class="px-4">Never in all their history have men been able truly to conceive of the world as one a single sphere</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="service-block-overlay text-center mb-5 p-lg-3">
+                        <i class="fa fa-calendar box-circle-solid mt-3 mb-3" aria-hidden="true"></i>
+                        <h3>Today Tennis Calendar</h3>
+                        <p class="px-4">Team A vs Team B, 4:30Pm Marara Std</p>
+                        <p class="px-4">Team C vs Team D, 6:00Pm Marara Std</p>
+                        <p class="px-4">Team E vs Team F, 8:00Pm Marara Std</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="service-block-overlay text-center mb-5 p-lg-3">
+                        <i class="fa fa-bug box-circle-solid mt-3 mb-3" aria-hidden="true"></i>
+                        <h3>Have a say</h3>
+                        <p class="px-4">Contact us </p>
+                        <ul>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+                            <li><a href="http://www.facebook.com/" target="_blank" id="facebook">Facebook</a></li>
+                            <li><a href="http://www.twitter.com/" target="_blank" id="twitter">Twitter</a></li>
+                            <li><a href="http://www.googleplus.com/" target="_blank" id="googleplus">Google&#43;</a></li>
+                            <li><a href="http://www.gmail.com/" target="_blank" id="mail">Email us</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
+</section>
+<!-- Info block 1 -->
+<section class="info-section bg-primary py-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-lg-6 content-half mt-md-0 pl-5 pt-4">
+                <div class="head-box mb-5 pl-5 mt-2">
+                    <h2 class="text-white">Our Story</h2>
+                    <h6 class="text-white text-underline-rb-white">This is the Darwin Tennis team</h6>
+                </div>
+                <ul class="pl-5">
+                    <li>
+
+                        <span class="list-content">
+                            <strong>Meeting the best team </strong>
+                            <br>Eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </span>
+                    </li>
+                    <li>
+
+                        <span class="list-content">
+                            <strong>Have more fun </strong>
+                            <br>Eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </span>
+                    </li>
+                    <li>
+
+                        <span class="list-content">
+                            <strong>Enjoy the tennis</strong>
+                            <br>Eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 p-0 m-0">
+                <img class="image" src="~/images/tennis10.jpg" alt="First slide" />
+            </div>
+        </div>
+</section>
+<!-- team style 1 -->
+<section class="team-section py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="head-box text-center mb-5 col-md-12">
+                <h2>Meet Our Team</h2>
+                <h6 class="text-underline-primary mb-5">Tennis team </h6>
+            </div>
+            <div class="col-md-4 mb-md-0 mb-sm-4">
+                <div class="member-box anim-lf t-bottom">
+                    <img class="image" src="~/images/dev3.gif" alt="First slide" />
+                    <div class="overlay-content">
+                        <h3 class="text-white ml-3 my-0">Aacsh Adhikari</h3>
+                        <span class="socail-l ml-3 mb-3">
+                            <a href="#" class="mr-2"><i class="fa fa-facebook box-circle-solid"></i></a>
+                            <a href="#" class="mr-2"><i class="fa fa-twitter box-circle-solid"></i></a>
+                            <a href="#"><i class="fa fa-dribbble box-circle-solid"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-md-0 mb-sm-4">
+                <div class="member-box anim-lf t-bottom">
+                    <img class="image" src="~/images/dev2.jpg" alt="First slide" />
+                    <div class="overlay-content">
+                        <h3 class="text-white ml-3 my-0">Alfonse Mugisho</h3>
+                        <span class="socail-l ml-3 mb-3">
+                            <a href="#" class="mr-2"><i class="fa fa-facebook box-circle-solid"></i></a>
+                            <a href="#" class="mr-2"><i class="fa fa-twitter box-circle-solid"></i></a>
+                            <a href="#"><i class="fa fa-dribbble box-circle-solid"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-md-0 mb-sm-4">
+                <div class="member-box anim-lf t-bottom">
+                    <img class="image" src="~/images/dev3.gif" alt="First slide" />
+                    <div class="overlay-content">
+                        <h3 class="text-white ml-3 my-0">Huang Huimin</h3>
+                        <span class="socail-l ml-3 mb-3">
+                            <a href="#" class="mr-2"><i class="fa fa-facebook box-circle-solid"></i></a>
+                            <a href="#" class="mr-2"><i class="fa fa-twitter box-circle-solid"></i></a>
+                            <a href="#"><i class="fa fa-dribbble box-circle-solid"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>
+</section>
+
+
+
+
+
+
+@*<div class="row">
+        <div class="col-md-3">
+
+            <h2>Info </h2>
+
+            <h5>Welcome Back to the tennis game </h5>
+            <ul>
+                <li>The NT Tennis is on</li>
+                <li>The winer of the final will gain AU$2000.00</li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>Events</h2>
+
+            <h5>Today Games</h5>
+            <ul>
+                <li>A vs B, 5:00Pm Marara Std</li>
+                <li>c vs D, 6:30Pm Marara Std</li>
+                <li>E vs F, 8:00Pm Marara Std</li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+
+            <h2>Join Us </h2>
+
+            <h5>Have a say </h5>
+            <ul>
+
+                <li><a href="http://www.facebook.com/" target="_blank" id="facebook">Facebook</a></li>
+                <li><a href="http://www.twitter.com/" target="_blank" id="twitter">Twitter</a></li>
+                <li><a href="http://www.googleplus.com/" target="_blank" id="googleplus">Google&#43;</a></li>
+                <li><a href="http://www.gmail.com/" target="_blank" id="mail">Email us</a></li>
+
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>Copyright</h2>
+
+            <h5>Work done by:</h5>
+
+            <p>
+                Alfonse, Aasish and Huimin &copy; 2018 | All Rights Reserved
+            </p>
+
+        </div>
+    </div>*@

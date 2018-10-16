@@ -8,6 +8,7 @@ namespace ETennis2.Model
         public int CoachId { get; set; }
         public string Name { get; set; }
         public string Nickname { get; set; }
+        public string Email { get; set; }
         public DateTime Dob { get; set; }
         public string Biography { get; set; }
     }

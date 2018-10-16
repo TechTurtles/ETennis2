@@ -24,6 +24,11 @@ namespace ETennis2.Controllers
         {
             return View(await _context.Member.ToListAsync());
         }
+        // GET: MemberList
+        public async Task<IActionResult> MemberList()
+        {
+            return View(await _context.Member.ToListAsync());
+        }
         // Try this and see if will work 
 
         // GET: Members/Details/5

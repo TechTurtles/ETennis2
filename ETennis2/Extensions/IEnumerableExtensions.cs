@@ -14,8 +14,8 @@ namespace ETennis2.Extensions
                    select new SelectListItem
                    {
                        Text = item.GetPropertyValue("Name"),
-                       Value = item.GetPropertyValue("Id"),
-                       Selected = item.GetPropertyValue("Id").Equals(selectedValue.ToString())
+                       Value = item.GetPropertyValue("CoachId"),
+                       Selected = item.GetPropertyValue("Name").Equals(selectedValue.ToString())
                    };
         }
     }
