@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ETennis2.Data;
 using ETennis2.Model;
+using ETennis2.Model.ViewModel;
 
 namespace ETennis.Controllers
 {
@@ -14,15 +12,26 @@ namespace ETennis.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
+        public ScheduleViewModel ScheduleVM { get; set; }
+
+
         public SchedulesController(ApplicationDbContext context)
         {
             _context = context;
+            ScheduleVM = new ScheduleViewModel()
+            {
+                Event = _context.Event.ToList(),
+                Member = _context.Member.ToList(),
+                Schedule = new ETennis2.Model.Schedule()
+            };
         }
 
         // GET: Schedules
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Schedule.ToListAsync());
+            var schedules = _context.Schedule.Include(model => model.Event).Include(model => model.Member);
+            return View(await schedules.ToListAsync());
         }
 
       
@@ -54,17 +63,17 @@ namespace ETennis.Controllers
         // POST: Schedules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ScheduleId,EventId,MemberId")] Schedule schedule)
+        public async Task<IActionResult> CreatePOST()
         {
             if (ModelState.IsValid)
             {
-                _context.Add(schedule);
+                _context.Add(ScheduleVM.Schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(schedule);
+            return View(ScheduleVM);
         }
 
         // GET: Schedules/Edit/5

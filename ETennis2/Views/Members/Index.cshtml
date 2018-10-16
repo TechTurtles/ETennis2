@@ -1,7 +1,68 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<ETennis2.Model.Member>
+
 @{
     ViewData["Title"] = "Index";
 }
+<h2>Your Account</h2>
+@{int counter = 0;
+    foreach (var item in Model)
+    {
+        if (@UserManager.GetUserName(User) == item.EmailId)
+        {
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.EmailId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmailId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Dob)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Dob)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>You are(@UserManager.GetUserName(User))  </p>
+            <a asp-action="Edit" asp-route-id="@item.MemberId" class="btn btn-success">&nbsp;<i class="fas fa-plus"></i> Update Details</a>
+            counter++;
+        }
 
-<h2>Index</h2>
+    }
 
+
+
+    if (counter == 0)
+    {
+        <p>Please create a account</p>
+        <a asp-action="Create" class="btn btn-primary">&nbsp;<i class="fas fa-plus"></i> Create Account</a>
+
+    }
+}

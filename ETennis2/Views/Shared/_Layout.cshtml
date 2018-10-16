@@ -48,10 +48,10 @@
                         @if (User.IsInRole(SD.Member))
                         {
 
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="Index">Coaches</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="AllCoach">Coaches</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="AllEvents">Events</a></li>
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">My Schedules</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Create">Account</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Index">Account</a></li>
 
                         }
 

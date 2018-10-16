@@ -24,6 +24,11 @@ namespace ETennis2.Controllers
         {
             return View(await _context.Coach.ToListAsync());
         }
+        // GET: AllCoaches
+        public async Task<IActionResult> AllCoach()
+        {
+            return View(await _context.Coach.ToListAsync());
+        }
 
 
 

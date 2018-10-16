@@ -1,7 +1,62 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model ETennis2.Model.Member
 @{
     ViewData["Title"] = "Create";
 }
+<h2 class="mt-5 text-info">Create Your Account</h2>
 
-<h2>Create</h2>
+<form method="post" asp-action="Create">
+    <div class="p-4 border rounded">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Name" class="form-control" />
+            </div>
+        </div>
+       
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="EmailId"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="EmailId" class="form-control" value="@UserManager.GetUserName(User)" />
+            </div>
+            <span asp-validation-for="EmailId" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Dob"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Dob" class="form-control" />
+            </div>
+            <span asp-validation-for="Dob" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Gender"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Gender" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Create" />
+            <a asp-action="Index" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

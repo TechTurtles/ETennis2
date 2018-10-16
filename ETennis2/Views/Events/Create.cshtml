@@ -6,10 +6,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>Event</h4>
-<hr />
+<h4 class="mt-5 text-info">New Events </h4>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -28,7 +25,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-2">
-                    <label asp-for="Coach" class="control-label"></label>
+                    <label asp-for="Coach"></label>
                 </div>
                 <div class="col-5">
                     <select asp-for="@Model.Event.CoachId" asp-items="Model.Coach.ToSelectListItem(Model.Event.CoachId)" class="form-control"></select>
