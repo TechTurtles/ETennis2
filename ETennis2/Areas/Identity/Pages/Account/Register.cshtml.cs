@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using ETennis2.Model;
 using ETennis2.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,18 +15,19 @@ using Microsoft.Extensions.Logging;
 namespace ETennis2.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<TennisUser> _signInManager;
+        private readonly UserManager<TennisUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<TennisRole> _roleManager;
 
         public RegisterModel(
-               UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
+               UserManager<TennisUser> userManager,
+            SignInManager<TennisUser> signInManager,
+            RoleManager<TennisRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -57,57 +59,47 @@ namespace ETennis2.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-
-
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            //added user data
+            [DataType(DataType.Text)]
+            [Display(Name = "Nick Name")]
+            public string Nickname { get; set; }
+
+            [Display(Name = "Birth Date")]
+            [DataType(DataType.Date)]
+            public DateTime Dob { get; set; }
+
+            public string Gender { get; set; }
+            public string Biography { get; set; }
         }
 
+        [Authorize(Roles = "Member")]
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
         }
 
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new TennisUser {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Nickname = Input.Nickname,
+                    Dob = Input.Dob,
+                    Gender = Input.Gender,
+                    Biography = Input.Biography
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
-                {
-                    Console.WriteLine(Input.UserInputRole);
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Admin))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Admin));
-                    }
-                    if (!await _roleManager.RoleExistsAsync(SD.Coach))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Coach));
-                    }
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Member))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Member));
-                    }
-
-                    if (Input.UserInputRole == "Admin")
-                    {
-                        await _userManager.AddToRoleAsync(user, SD.Admin);
-                    }
-                    else if (Input.UserInputRole == "Coach")
-                    {
-                        await _userManager.AddToRoleAsync(user, SD.Coach);
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, SD.Member);
-                    }
-
+                { 
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -121,6 +113,7 @@ namespace ETennis2.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userManager.AddToRoleAsync(user, "Member");
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

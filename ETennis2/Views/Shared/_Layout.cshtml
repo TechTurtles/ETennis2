@@ -1,4 +1,6 @@
 ﻿@using ETennis2.Utility;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 <html>
 <head>
@@ -32,32 +34,32 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                        @if (User.IsInRole(SD.Admin))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="MemberList">Members</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">Schedules</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
+                <!--manage menu for different roles-->
+                @if (User.IsInRole(SD.Admin))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Index">Members</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="Index">Coaches</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">Manage Schedules</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
 
-                        }
-                        @if (User.IsInRole(SD.Coach))
-                        {
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="Index">Profile</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="MySchedule">My Schedules</a></li>
-                            @*<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Index">Members</a></li>*@
-                        }
-                        @if (User.IsInRole(SD.Member))
-                        {
+                }
+                @if (User.IsInRole(SD.Coach))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="Index">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">My Schedules</a></li>
+                    @*<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Index">Members</a></li>*@
+                }
+                @if (User.IsInRole(SD.Member))
+                {
 
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="AllCoach">Coaches</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="AllEvents">Events</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Schedules" asp-action="Index">My Schedules</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Members" asp-action="Index">Account</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Coaches" asp-action="Index">Coaches</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Events" asp-action="Index">My Schedules</a></li>
 
-                        }
+                }
 
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+            </ul>
+            <partial name="_LoginPartial" />
+        </div>
     </nav>
     <partial name="_CookieConsentPartial" />
     <div class="container body-content mt-5 pt-5">

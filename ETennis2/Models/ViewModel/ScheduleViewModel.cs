@@ -10,6 +10,6 @@ namespace ETennis2.Model.ViewModel
     {
         public Schedule Schedule { get; set; }
         public IEnumerable<Event> Event { get; set; }
-        public IEnumerable<Member> Member { get; set; }
+        public IEnumerable<TennisUser> Member { get; set; }
     }
 }

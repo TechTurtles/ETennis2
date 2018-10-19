@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ETennis2.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ETennis2.Model;
 
 namespace ETennis2
 {
@@ -38,7 +39,7 @@ namespace ETennis2
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
          
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<TennisUser, TennisRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();

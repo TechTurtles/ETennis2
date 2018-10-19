@@ -10,6 +10,6 @@ namespace ETennis2.Model
         public string ClaimType { get; set; }
         public string ClaimValue { get; set; }
 
-        public AspNetUsers User { get; set; }
+        public TennisUser User { get; set; }
     }
 }

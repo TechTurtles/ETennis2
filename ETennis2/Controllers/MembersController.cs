@@ -7,29 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ETennis2.Data;
 using ETennis2.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace ETennis2.Controllers
 {
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<TennisUser> _userManager;
 
-        public MembersController(ApplicationDbContext context)
+        public MembersController(ApplicationDbContext context,UserManager<TennisUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Members
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Member.ToListAsync());
+            var memberList = (from u in _context.TennisUser
+                             join ur in _context.TennisUserRole
+                             on u.Id equals ur.UserId
+                             join r in _context.TennisRole
+                             on ur.RoleId equals r.Id
+                             where r.Name == "Member"
+                             select u.UserName).Distinct();
+            return View(await memberList.ToListAsync());
         }
-        // GET: MemberList
-        public async Task<IActionResult> MemberList()
-        {
-            return View(await _context.Member.ToListAsync());
-        }
-        // Try this and see if will work 
 
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -39,8 +43,8 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.MemberId == id);
+            var member = await _context.TennisUser
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (member == null)
             {
                 return NotFound();
@@ -60,11 +64,12 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MemberId,Name,Dob,Gender,EmailId")] Member member)
+        public async Task<IActionResult> Create([Bind("Id,UserName,Email,Nickname,Gender,Dob,Biography")] TennisUser member)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(member);
+                await _userManager.AddToRoleAsync(member, "Member");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -79,7 +84,7 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
+            var member = await _context.TennisUser.FindAsync(id);
             if (member == null)
             {
                 return NotFound();
@@ -92,9 +97,9 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,Name,Dob,Gender,Email")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Email,Nickname,Gender,Dob,Biography")] TennisUser member)
         {
-            if (id != member.MemberId)
+            if (id != member.Id)
             {
                 return NotFound();
             }
@@ -108,7 +113,7 @@ namespace ETennis2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberExists(member.MemberId))
+                    if (!MemberExists(member.Id))
                     {
                         return NotFound();
                     }
@@ -130,8 +135,8 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.MemberId == id);
+            var member = await _context.TennisUser
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (member == null)
             {
                 return NotFound();
@@ -145,15 +150,15 @@ namespace ETennis2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var member = await _context.Member.FindAsync(id);
-            _context.Member.Remove(member);
+            var member = await _context.TennisUser.FindAsync(id);
+            _context.TennisUser.Remove(member);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MemberExists(int id)
         {
-            return _context.Member.Any(e => e.MemberId == id);
+            return _context.TennisUser.Any(e => e.Id == id);
         }
     }
 }

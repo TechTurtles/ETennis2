@@ -12,13 +12,7 @@ namespace ETennis2.Model
         public string Description { get; set; }
         //public int Coach { get; set; }
         public DateTime Date { get; set; }
-
-        //[NotMapped]
-        [Display(Name = "Coach")]
-        public int CoachId { get; set; }
-
-        //[NotMapped]
-        [ForeignKey("CoachId")]
-        public virtual Coach Coach { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
+        
     }
 }

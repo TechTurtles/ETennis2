@@ -1,86 +1,79 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using ETennis2.Model
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<TennisUser> SignInManager
+@inject UserManager<TennisUser> UserManager
 
-@model IEnumerable<ETennis2.Model.Coach>
+@model IEnumerable<ETennis2.Model.TennisUser>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-<h2>Index</h2>
-@{int counter = 0;
-    foreach (var item in Model)
+<div class="mt-5 row">
+    <div class="col-6">
+        <h2 class="text-info">Coaches</h2>
+    </div>
+</div>
+
+@foreach (var item in Model)
+{
+    if (@UserManager.GetUserName(User) == item.Email)
     {
-        if (@UserManager.GetUserName(User) == item.Email)
-        {
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.CoachId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CoachId)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.Nickname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nickname)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.Dob)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Dob)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayNameFor(model => model.Biography)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Biography)
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>You are(@UserManager.GetUserName(User))  </p>
-            <a asp-action="Edit"asp-route-id="@item.CoachId" class="btn btn-success">&nbsp;<i class="fas fa-plus"></i> Update Details</a>
-                counter++;
-            }
+        <table class="table table-striped border">
+            <tbody>
+                <tr class="table-info">
+                    <td>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Nickname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nickname)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Dob)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dob)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Biography)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Biography)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>You are(@UserManager.GetUserName(User))  </p>
+        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">&nbsp;<i class="fas fa-plus"></i> Update Details</a>
 
-        }
-    
-
-
-    if (counter == 0)
-    {
-            <p>Please create a account</p>
-            <a asp-action="Create" class="btn btn-primary">&nbsp;<i class="fas fa-plus"></i> Create Account</a>
-
-        }
     }
+}
 

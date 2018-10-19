@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using ETennis2.Model
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<TennisUser> SignInManager
+@inject UserManager<TennisUser> UserManager
 
-@model IEnumerable<ETennis2.Model.Member>
+@model IEnumerable<ETennis2.Model.TennisUser>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,24 +13,24 @@
 @{int counter = 0;
     foreach (var item in Model)
     {
-        if (@UserManager.GetUserName(User) == item.EmailId)
+        if (@UserManager.GetUserName(User) == item.Email)
         {
             <table>
                 <tbody>
                     <tr>
                         <td>
-                            @Html.DisplayNameFor(model => model.Name)
+                            @Html.DisplayNameFor(model => model.UserName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.UserName)
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            @Html.DisplayNameFor(model => model.EmailId)
+                            @Html.DisplayNameFor(model => model.Id)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.EmailId)
+                            @Html.DisplayFor(modelItem => item.Id)
                         </td>
                     </tr>
                     <tr>
@@ -51,7 +52,7 @@
                 </tbody>
             </table>
             <p>You are(@UserManager.GetUserName(User))  </p>
-            <a asp-action="Edit" asp-route-id="@item.MemberId" class="btn btn-success">&nbsp;<i class="fas fa-plus"></i> Update Details</a>
+            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">&nbsp;<i class="fas fa-plus"></i> Update Details</a>
             counter++;
         }
 

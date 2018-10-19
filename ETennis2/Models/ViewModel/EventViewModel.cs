@@ -8,6 +8,6 @@ namespace ETennis2.Model.ViewModel
     public class EventViewModel
     {
         public Event Event { get; set; }
-        public IEnumerable<Coach> Coach { get; set; }
+        public IEnumerable<TennisUser> Coach { get; set; }
     }
 }

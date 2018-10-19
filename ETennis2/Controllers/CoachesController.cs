@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ETennis2.Data;
 using ETennis2.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,24 +14,27 @@ namespace ETennis2.Controllers
     public class CoachesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<TennisUser> _userManager;
 
-        public CoachesController(ApplicationDbContext context)
+        public CoachesController(ApplicationDbContext context, UserManager<TennisUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
-        // GET: Coaches
+        
+        // GET: AllCoaches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Coach.ToListAsync());
+            //var coachList =  (from u in _context.TennisUser
+            //                 join ur in _context.TennisUserRole
+            //                 on u.Id equals ur.UserId
+            //                 join r in _context.TennisRole
+            //                 on ur.RoleId equals r.Id 
+            //                 where r.Name == "Coach"
+            //                 select u.UserName).Distinct();
+            //return View(await coachList.ToListAsync());
+            return View(await _context.TennisUser.ToListAsync());
         }
-        // GET: AllCoaches
-        public async Task<IActionResult> AllCoach()
-        {
-            return View(await _context.Coach.ToListAsync());
-        }
-
-
 
         // GET: Coaches/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -40,8 +44,8 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coach
-                .FirstOrDefaultAsync(m => m.CoachId == id);
+            var coach = await _context.TennisUser
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (coach == null)
             {
                 return NotFound();
@@ -61,11 +65,12 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CoachId,Name,Nickname,Dob,Biography,Email")] Coach coach)
+        public async Task<IActionResult> Create([Bind("Id,UserName,Email,Nickname,Gender,Dob,Biography")] TennisUser coach)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(coach);
+                await _userManager.AddToRoleAsync(coach, "Coach");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -80,7 +85,7 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coach.FindAsync(id);
+            var coach = await _context.TennisUser.FindAsync(id);
             if (coach == null)
             {
                 return NotFound();
@@ -93,9 +98,9 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CoachId,Name,Nickname,Dob,Biography,Email")] Coach coach)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Email,Nickname,Gender,Dob,Biography")] TennisUser coach)
         {
-            if (id != coach.CoachId)
+            if (id != coach.Id)
             {
                 return NotFound();
             }
@@ -109,7 +114,7 @@ namespace ETennis2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CoachExists(coach.CoachId))
+                    if (!CoachExists(coach.Id))
                     {
                         return NotFound();
                     }
@@ -131,8 +136,8 @@ namespace ETennis2.Controllers
                 return NotFound();
             }
 
-            var coach = await _context.Coach
-                .FirstOrDefaultAsync(m => m.CoachId == id);
+            var coach = await _context.TennisUser
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (coach == null)
             {
                 return NotFound();
@@ -146,15 +151,22 @@ namespace ETennis2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var coach = await _context.Coach.FindAsync(id);
-            _context.Coach.Remove(coach);
+            var coach = await _context.TennisUser.FindAsync(id);
+            _context.TennisUser.Remove(coach);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CoachExists(int id)
         {
-            return _context.Coach.Any(e => e.CoachId == id);
+            var coachList = (from u in _context.TennisUser
+                             join ur in _context.TennisUserRole
+                             on u.Id equals ur.UserId
+                             join r in _context.TennisRole
+                             on ur.RoleId equals r.Id
+                             where r.Name == "Coach"
+                             select new { u.Id, u.UserName }).Distinct();
+            return coachList.Any(e => e.Id == id);
         }
     }
 }

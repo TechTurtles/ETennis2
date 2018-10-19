@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using ETennis2.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,13 @@ namespace ETennis2.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<TennisUser> _userManager;
+        private readonly SignInManager<TennisUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<TennisUser> userManager,
+            SignInManager<TennisUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -46,6 +47,18 @@ namespace ETennis2.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            //added user data
+            [DataType(DataType.Text)]
+            [Display(Name = "Nick Name")]
+            public string Nickname { get; set; }
+
+            [Display(Name = "Birth Date")]
+            [DataType(DataType.Date)]
+            public DateTime Dob { get; set; }
+
+            public string Gender { get; set; }
+            public string Biography { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -65,7 +78,11 @@ namespace ETennis2.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Nickname = Input.Nickname,
+                Dob = Input.Dob,
+                Gender = Input.Gender,
+                Biography = Input.Biography
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -85,7 +102,23 @@ namespace ETennis2.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            if (Input.Nickname != user.Nickname)
+            {
+                user.Nickname = Input.Nickname;
+            }
+            if (Input.Dob != user.Dob)
+            {
+                user.Dob = Input.Dob;
+            }
+            if (Input.Gender != user.Gender)
+            {
+                user.Gender = Input.Gender;
+            }
 
+            if (Input.Biography != user.Biography)
+            {
+                user.Biography = Input.Biography;
+            }
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)
             {
@@ -107,6 +140,9 @@ namespace ETennis2.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
+            //update user info
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

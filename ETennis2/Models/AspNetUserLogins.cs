@@ -9,6 +9,6 @@ namespace ETennis2.Model
         public string ProviderKey { get; set; }
         public string UserId { get; set; }
 
-        public AspNetUsers User { get; set; }
+        public TennisUser User { get; set; }
     }
 }

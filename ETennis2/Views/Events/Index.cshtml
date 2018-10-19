@@ -2,8 +2,8 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <div class="mt-5 row">
     <div class="col-6">
@@ -13,6 +13,7 @@
         <a asp-action="Create" class="btn btn-info">&nbsp;<i class="fas fa-plus"></i> New Event</a>
     </div>
 </div>
+
 <table class="table table-striped border">
     <thead>
         <tr class="table-info">
@@ -23,36 +24,29 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Coach)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Coach.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    <partial name="_TableButtonPartial" model="item.EventId" />
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-success">&nbsp;<i class="fas"></i> Edit</a>
+                <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-success">&nbsp;<i class="fas"></i> Detail</a>
+                <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-success">&nbsp;<i class="fas fas-minus"></i> Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>
-

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ETennis2.Extensions
 {
-    public static class IEnumerableExtensions
+    public static class IEnumerable
     {
         public static IEnumerable<SelectListItem> ToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
         {

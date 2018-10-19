@@ -9,16 +9,16 @@ namespace ETennis2.Model
     {
         public int ScheduleId { get; set; }
 
-        [Display(Name = "Event")]
+        [Display(Name = "EventId")]
         public int EventId { get; set; }
 
-        [ForeignKey("EventId")]
+        //[ForeignKey("Event")]
         public virtual Event Event { get; set; }
 
-        [Display(Name = "Member")]
-        public int MemberId { get; set; }
-  
-        [ForeignKey("MemberId")]
-        public virtual Member Member { get; set; }
+        [Display(Name = "UserId")]
+        public int UserId { get; set; }
+
+        //[ForeignKey("User")]
+        public virtual TennisUser TennisUser { get; set; }
     }
 }

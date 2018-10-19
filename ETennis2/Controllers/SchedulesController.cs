@@ -1,40 +1,30 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ETennis2.Data;
 using ETennis2.Model;
-using ETennis2.Model.ViewModel;
 
-namespace ETennis.Controllers
+namespace ETennis2.Controllers
 {
     public class SchedulesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        [BindProperty]
-        public ScheduleViewModel ScheduleVM { get; set; }
-
-
         public SchedulesController(ApplicationDbContext context)
         {
             _context = context;
-            ScheduleVM = new ScheduleViewModel()
-            {
-                Event = _context.Event.ToList(),
-                Member = _context.Member.ToList(),
-                Schedule = new ETennis2.Model.Schedule()
-            };
         }
 
         // GET: Schedules
         public async Task<IActionResult> Index()
         {
-            var schedules = _context.Schedule.Include(model => model.Event).Include(model => model.Member);
-            return View(await schedules.ToListAsync());
+            var applicationDbContext = _context.Schedule.Include(s => s.Event);
+            return View(await applicationDbContext.ToListAsync());
         }
-
-      
 
         // GET: Schedules/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -45,6 +35,7 @@ namespace ETennis.Controllers
             }
 
             var schedule = await _context.Schedule
+                .Include(s => s.Event)
                 .FirstOrDefaultAsync(m => m.ScheduleId == id);
             if (schedule == null)
             {
@@ -57,23 +48,25 @@ namespace ETennis.Controllers
         // GET: Schedules/Create
         public IActionResult Create()
         {
+            ViewData["EventId"] = new SelectList(_context.Event, "EventId", "EventId");
             return View();
         }
 
         // POST: Schedules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePOST()
+        public async Task<IActionResult> Create([Bind("ScheduleId,EventId,UserId")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ScheduleVM.Schedule);
+                _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(ScheduleVM);
+            ViewData["EventId"] = new SelectList(_context.Event, "EventId", "EventId", schedule.EventId);
+            return View(schedule);
         }
 
         // GET: Schedules/Edit/5
@@ -89,6 +82,7 @@ namespace ETennis.Controllers
             {
                 return NotFound();
             }
+            ViewData["EventId"] = new SelectList(_context.Event, "EventId", "EventId", schedule.EventId);
             return View(schedule);
         }
 
@@ -97,7 +91,7 @@ namespace ETennis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ScheduleId,EventId,MemberId")] Schedule schedule)
+        public async Task<IActionResult> Edit(int id, [Bind("ScheduleId,EventId,UserId")] Schedule schedule)
         {
             if (id != schedule.ScheduleId)
             {
@@ -124,6 +118,7 @@ namespace ETennis.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EventId"] = new SelectList(_context.Event, "EventId", "EventId", schedule.EventId);
             return View(schedule);
         }
 
@@ -136,6 +131,7 @@ namespace ETennis.Controllers
             }
 
             var schedule = await _context.Schedule
+                .Include(s => s.Event)
                 .FirstOrDefaultAsync(m => m.ScheduleId == id);
             if (schedule == null)
             {

@@ -1,52 +1,37 @@
-﻿@model ETennis2.Model.ViewModel.ScheduleViewModel
-@using ETennis2.Extensions
+﻿@model ETennis2.Model.Schedule
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h4 class="mt-5 text-info">Enroll </h4>
-<p>Hasn't added enroll functions.</p>
-@*<div class="row">
+
+<h4 class="mt-5 text-info">Create Schedule</h4>
+
+<hr />
+<div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group row">
-                <div class="form-group">
-                    <label asp-for="@Model.Event.EventId" class="control-label"></label>
-                    <input asp-for="Event.Name" class="form-control" />
-                    <span asp-validation-for="Event.Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Event.Description" class="control-label"></label>
-                    <input asp-for="Event.Description" class="form-control" />
-                    <span asp-validation-for="Event.Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-2">
-                        <label asp-for="Coach"></label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="@Model.Event.CoachId" asp-items="Model.Coach.ToSelectListItem(Model.Event.CoachId)" class="form-control"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Event.Date" class="control-label"></label>
-                    <input asp-for="Event.Date" class="form-control" />
-                    <span asp-validation-for="Event.Date" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
-                </div>
+            <div class="form-group">
+                <label asp-for="EventId" class="control-label"></label>
+                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
-
+}

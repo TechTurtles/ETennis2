@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ETennis2.Model;
 using ETennis2.Data;
-using ETennis2.Model.ViewModel;
+using ETennis2.Model;
 
 namespace ETennis2.Controllers
 {
@@ -12,36 +14,15 @@ namespace ETennis2.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        [BindProperty]
-        public EventViewModel EventVM { get; set; }
-
         public EventsController(ApplicationDbContext context)
         {
             _context = context;
-            EventVM = new EventViewModel()
-            {
-                Coach = _context.Coach.ToList(),
-                Event = new Model.Event()
-            };
         }
 
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            var events = _context.Event.Include(m => m.Coach);
             return View(await _context.Event.ToListAsync());
-        }
-        //GET: CoachSchedules
-        public async Task<IActionResult> MySchedule()
-        {
-            var events = _context.Event.Include(m => m.Coach);
-            return View(await events.ToListAsync());
-        }
-        //GET: AllEvents
-        public async Task<IActionResult> AllEvents()
-        {
-            var events = _context.Event.Include(m => m.Coach);
-            return View(await events.ToListAsync());
         }
 
         // GET: Events/Details/5
@@ -65,26 +46,23 @@ namespace ETennis2.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            return View(EventVM);
+            return View();
         }
 
         // POST: Events/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePOST()
-            //[Bind("EventId,Name,Description,Coach,Date")]
-       // Event @event
+        public async Task<IActionResult> Create([Bind("EventId,Name,Description,Date")] Event @event)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(EventVM);
-               
+                _context.Add(@event);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            _context.Event.Add(EventVM.Event);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View(@event);
         }
 
         // GET: Events/Edit/5
@@ -108,7 +86,7 @@ namespace ETennis2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,Name,Description,Coach,Date")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("EventId,Name,Description,Date")] Event @event)
         {
             if (id != @event.EventId)
             {
