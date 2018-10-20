@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using ETennis2.Model;
+using ETennis2.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ETennis2.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<TennisUser,TennisRole,int>
+    public class ApplicationDbContext: IdentityDbContext<TennisUser, TennisRole, int,
+        TennisUserClaim, TennisUserRole, TennisUserLogin,TennisRoleClaim,TennisUserToken>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -35,6 +37,24 @@ namespace ETennis2.Data
             //    .HasOne(s => s.TennisUser)
             //    .WithMany(b => b.Schedules)
             //    .HasForeignKey(s => s.UserId);
+
+            modelBuilder.Entity<TennisUser>(b =>
+            {
+                // Each User can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<TennisRole>(b =>
+            {
+                // Each Role can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+            });
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ETennis2.Migrations
 {
-    public partial class initial : Migration
+    public partial class initialWithIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -76,7 +76,8 @@ namespace ETennis2.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
+                    RoleId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,6 +88,12 @@ namespace ETennis2.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId1",
+                        column: x => x.RoleId1,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,7 +104,8 @@ namespace ETennis2.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
+                    UserId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,6 +116,12 @@ namespace ETennis2.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,7 +131,8 @@ namespace ETennis2.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    UserId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,6 +143,12 @@ namespace ETennis2.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,8 +156,7 @@ namespace ETennis2.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,7 +182,8 @@ namespace ETennis2.Migrations
                     UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    Value = table.Column<string>(nullable: true),
+                    UserId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -173,6 +194,12 @@ namespace ETennis2.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -181,7 +208,8 @@ namespace ETennis2.Migrations
                 {
                     ScheduleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EventId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     TennisUserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -192,7 +220,7 @@ namespace ETennis2.Migrations
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "EventId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Schedule_AspNetUsers_TennisUserId",
                         column: x => x.TennisUserId,
@@ -207,6 +235,11 @@ namespace ETennis2.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId1",
+                table: "AspNetRoleClaims",
+                column: "RoleId1");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
@@ -219,9 +252,19 @@ namespace ETennis2.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId1",
+                table: "AspNetUserClaims",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
                 table: "AspNetUserLogins",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId1",
+                table: "AspNetUserLogins",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
@@ -239,6 +282,11 @@ namespace ETennis2.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserTokens_UserId1",
+                table: "AspNetUserTokens",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedule_EventId",

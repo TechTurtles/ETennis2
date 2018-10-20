@@ -13,5 +13,6 @@ namespace ETennis2.Model
         public string Gender { get; set; }
         public string Biography { get; set; }
         public ICollection<Schedule> Schedules { get; set; }
+        public ICollection<TennisUserRole> UserRoles { get; set; }
     }
 }

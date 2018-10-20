@@ -25,15 +25,23 @@ namespace ETennis2.Controllers
         // GET: AllCoaches
         public async Task<IActionResult> Index()
         {
-            //var coachList =  (from u in _context.TennisUser
-            //                 join ur in _context.TennisUserRole
-            //                 on u.Id equals ur.UserId
-            //                 join r in _context.TennisRole
-            //                 on ur.RoleId equals r.Id 
-            //                 where r.Name == "Coach"
-            //                 select u.UserName).Distinct();
-            //return View(await coachList.ToListAsync());
-            return View(await _context.TennisUser.ToListAsync());
+            var coachList = (from u in _context.TennisUser.AsEnumerable()
+                                                 join ur in _context.TennisUserRole.AsEnumerable()
+                                                 on u.Id equals ur.UserId
+                                                 join r in _context.TennisRole.AsEnumerable()
+                                                 on ur.RoleId equals r.Id
+                                                 where r.Name == "Coach"
+                                                 select new
+                                                 {
+                                                     u.Id,
+                                                     u.UserName,
+                                                     u.Nickname,
+                                                     u.Dob,
+                                                     u.Biography
+                                                 });
+
+            //return View(await coachList);
+            return View(await coachList.CopyToDataTable().ToListAsync());
         }
 
         // GET: Coaches/Details/5

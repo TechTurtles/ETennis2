@@ -6,6 +6,6 @@ namespace ETennis2.Model
 {
     public partial class TennisRole : IdentityRole<int>
     {
-        
+        public ICollection<TennisUserRole> UserRoles { get; set; }
     }
 }

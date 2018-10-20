@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ETennis2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181019063119_updateSchedule")]
-    partial class updateSchedule
+    [Migration("20181020085748_initialWithIdentity")]
+    partial class initialWithIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -144,26 +144,7 @@ namespace ETennis2.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("ETennis2.Model.TennisUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,14 +156,18 @@ namespace ETennis2.Migrations
 
                     b.Property<int>("UserId");
 
+                    b.Property<int?>("UserId1");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("UserId1");
+
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("ETennis2.Model.TennisUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -192,32 +177,54 @@ namespace ETennis2.Migrations
 
                     b.Property<int>("UserId");
 
+                    b.Property<int?>("UserId1");
+
                     b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("UserId1");
+
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("ETennis2.Model.TennisUserRole", b =>
                 {
                     b.Property<int>("UserId");
 
                     b.Property<int>("RoleId");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<int>");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("ETennis2.Models.TennisRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<int>("RoleId");
+
+                    b.Property<int?>("RoleId1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("ETennis2.Models.TennisUserToken", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -225,21 +232,15 @@ namespace ETennis2.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("UserId1");
+
                     b.Property<string>("Value");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
+                    b.HasIndex("UserId1");
+
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ETennis2.Model.TennisUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
-
-
-                    b.ToTable("TennisUserRole");
-
-                    b.HasDiscriminator().HasValue("TennisUserRole");
                 });
 
             modelBuilder.Entity("ETennis2.Model.Schedule", b =>
@@ -254,49 +255,65 @@ namespace ETennis2.Migrations
                         .HasForeignKey("TennisUserId");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("ETennis2.Model.TennisUserClaim", b =>
+                {
+                    b.HasOne("ETennis2.Model.TennisUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ETennis2.Model.TennisUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("ETennis2.Model.TennisUserLogin", b =>
+                {
+                    b.HasOne("ETennis2.Model.TennisUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ETennis2.Model.TennisUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("ETennis2.Model.TennisUserRole", b =>
+                {
+                    b.HasOne("ETennis2.Model.TennisRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ETennis2.Model.TennisUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ETennis2.Models.TennisRoleClaim", b =>
                 {
                     b.HasOne("ETennis2.Model.TennisRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ETennis2.Model.TennisRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId1");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("ETennis2.Models.TennisUserToken", b =>
                 {
                     b.HasOne("ETennis2.Model.TennisUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.HasOne("ETennis2.Model.TennisUser")
+                    b.HasOne("ETennis2.Model.TennisUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.HasOne("ETennis2.Model.TennisRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ETennis2.Model.TennisUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.HasOne("ETennis2.Model.TennisUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId1");
                 });
 #pragma warning restore 612, 618
         }
